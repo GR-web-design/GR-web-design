@@ -1,0 +1,56 @@
+            jQuery (document).ready ( ()=> {
+			
+			    jQuery('a[href*="tel:"]').click(()=>{
+                    iolTrackEvent('call');
+                });
+                
+                jQuery('a[href*="tel:"]').children().click(()=>{
+                    iolTrackEvent('call');
+                });
+                
+                jQuery('a[href*="mailto:"]').click(()=>{
+                    iolTrackEvent('mail');
+                });
+                
+                jQuery('a[href*="mailto:"]').children().click(()=>{
+                    iolTrackEvent('mail');
+                });
+				
+				/** Custom Events**/
+				
+				jQuery('.ioltrack-form-container').each((i,o)=>{
+					var trackEvent = jQuery(o).attr('data-track');
+					if (trackEvent == null) {
+						console.log('!IOL: missing data-track attribute');
+					} else {
+						jQuery(o).find('form').each( (ii, io)=>{
+							jQuery(io).submit(()=>{								
+								iolTrackEvent('send');
+							});
+						});
+					}
+				});
+				
+				jQuery('.ioltrack-container').each((i,o)=>{
+					var trackEvent = jQuery(o).attr('data-track');
+					if (trackEvent == null) {
+						console.log('!IOL: missing data-track attribute');
+					} else {
+						jQuery(o).find('a').each( (ii, io)=>{
+							jQuery(io).addClass('ioltrack').attr('data-track', trackEvent);
+						});
+					}
+				});
+				
+				jQuery('a.ioltrack').each((i,o)=>{
+					var trackEvent = jQuery(o).attr('data-track');
+					if (trackEvent == null) {
+						console.log('!IOL: missing data-track attribute');
+					} else {
+						jQuery(o).children().click(()=>{
+							iolTrackEvent(trackEvent);
+						});
+					}
+				});
+			    
+			});
